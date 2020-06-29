@@ -1,3 +1,8 @@
+// `cy.login()` will programmatically login using the `USERNAME` and `PASSWORD` environment
+// variables defined in `cypress.json` (or with `CYPRESS_` prefix if defined elsewhere)
+// Recommended way to use is to put `cy.login()` in `beforeEach`
+// If it is necessary to login as a different user, for example to test behaviour for users with
+// limited permissions, simply provide the appropriate username and password as arguments
 Cypress.Commands.add("login", (username, password) => {
     return cy.request({
         url: '/accounts/login/',
