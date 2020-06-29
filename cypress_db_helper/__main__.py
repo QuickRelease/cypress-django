@@ -81,7 +81,6 @@ def main():
             shell=True,
         )
         return
-    # TODO: remove this option?
     if args.reset:
         cypress = import_module(SETTINGS)
         try:
@@ -89,10 +88,15 @@ def main():
         except FileNotFoundError:
             # Nothing to remove
             pass
-        except PermissionError:
+        except PermissionError as e:
             # If the server is still running (or any other processes are accessing the file)
             # it will be locked
-            raise
+            print(
+                f"{e}\nRemember to shut down any processes accessing the database file "
+                "(e.g. the server or any running python shells)",
+                file=sys.stderr,
+            )
+            return
     if args.init:
         run(
             f"python manage.py migrate --settings={SETTINGS}",
