@@ -14,7 +14,6 @@ reload the data, so we can save time here.
 Implemented as a standalone script rather than a management command to avoid the
 overhead of `manage.py` when exiting early, since we want tests to be as fast as
 possible.
-
 """
 
 import argparse
@@ -25,7 +24,10 @@ import sys
 
 from django.core.cache import cache
 
-SETTINGS = f"{os.path.split(os.path.abspath('.'))[-1]}.settings.cypress"
+SETTINGS = os.environ.get(
+    "CYPRESS_SETTINGS_MODULE",
+    f"{os.path.split(os.path.abspath('.'))[-1]}.settings.cypress"
+)
 
 
 def main():
@@ -118,6 +120,7 @@ def main():
             shell=True,
         )
     if args.data:
+        # TODO: more visibility when a fixture can't be loaded
         run(
             [
                 "python",
