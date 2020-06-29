@@ -13,6 +13,4 @@ setup(
     long_description_content_type="text/markdown",
     url='https://github.com/QuickRelease/cypress-db-helper.git',
     packages=find_packages(),
-    scripts=['bin/cypress_db_helper.py'],
-    entry_points={'console_scripts': ['cypress_db_helper=bin.cypress_db_helper:main']},
 )
