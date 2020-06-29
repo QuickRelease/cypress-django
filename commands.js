@@ -37,9 +37,10 @@ Cypress.Commands.add("login", (username, password) => {
 // If the test will write to the database, `mutable` should be set to `true`,
 // otherwise `false` to allow early exit from the script if no fixture loading
 // is necessary
+const path = require("path");
 Cypress.Commands.add("resetDB", (fixture, mutable) => {
     cy.exec(
         `python -m cypress_db_helper ${mutable ? "--clearcache" : ""} --flush`
-            `${Cypress.env("DB_FIXTURE_DIR") || "cypress/db/fixtures"}/${fixture}`
+        + `${path.join(Cypress.env("DB_FIXTURE_DIR") || "cypress/db/fixtures", fixture)}`
     );
 });
