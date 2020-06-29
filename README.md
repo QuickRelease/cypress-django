@@ -6,9 +6,8 @@ Python and Node.js package providing support for Cypress and Django integration.
 
 Issue commands to operate on the project's Cypress test database.
 
-By default, expects `settings/cypress.py` to exist and will use this as the settings
-module for the database operations. This can be overriden by setting the environment
-variable `CYPRESS_SETTINGS_MODULE`.
+Expects `settings/cypress.py` to exist and will use this as the settings
+module for the database operations.
 
 This script can be used in Cypress tests to load fixtures into the test database,
 as well as be run on the command line as a shortcut for various operations on the

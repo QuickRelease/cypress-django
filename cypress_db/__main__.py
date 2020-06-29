@@ -24,10 +24,7 @@ import sys
 
 from django.core.cache import cache
 
-SETTINGS = os.environ.get(
-    "CYPRESS_SETTINGS_MODULE",
-    f"{os.path.split(os.path.abspath('.'))[-1]}.settings.cypress"
-)
+SETTINGS = f"{os.path.split(os.path.abspath('.'))[-1]}.settings.cypress"
 
 
 def main():
