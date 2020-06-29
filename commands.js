@@ -38,5 +38,8 @@ Cypress.Commands.add("login", (username, password) => {
 // otherwise `false` to allow early exit from the script if no fixture loading
 // is necessary
 Cypress.Commands.add("resetDB", (fixture, mutable) => {
-    cy.exec(`python -m cypress_db_helper ${mutable ? "--clearcache" : ""} --flush cypress/db/fixtures/${fixture}`);
+    cy.exec(
+        `python -m cypress_db_helper ${mutable ? "--clearcache" : ""} --flush`
+            `${path.join(Cypress.env("DB_FIXTURE_DIR") || "cypress/db/fixtures/", fixture)}`
+    );
 });

@@ -73,7 +73,9 @@ installed:
 - Otherwise set `mutable` to `false` to allow early exit from the script if no fixture loading
 is necessary (this means repeated test runs with such tests will be significantly faster)
 - The fixtures provided in the `fixture` argument should be the filename of a JSON file in
-`cypress/db/fixtures/`.
+the directory pointed to by the environment variable `DB_FIXTURE_DIR` defined in `cypress.json`
+(or with `CYPRESS_` prefix if defined elsewhere); if the environment variable is unset, the
+default is `cypress/db/fixtures`.
 
 ### Installation
 
