@@ -33,7 +33,10 @@ Cypress.Commands.add("login", (username, password) => {
     });
 });
 
-
+// `cy.resetDB` will flush the test database and load in a fixture
+// If the test will write to the database, `mutable` should be set to `true`,
+// otherwise `false` to allow early exit from the script if no fixture loading
+// is necessary
 Cypress.Commands.add("resetDB", (fixture, mutable) => {
     cy.exec(`python -m cypress_db_helper ${mutable ? "--clearcache" : ""} --flush cypress/db/fixtures/${fixture}`);
 });

@@ -4,14 +4,14 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='cypress-db-helper',
+    name='cypress-django',
     version='0.0.1',
     author='David Vaughan',
     author_email='david.vaughan@quickrelease.co.uk',
-    description='Cypress DB Helper command line script',
+    description='Cypress DB helper command line script',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://github.com/QuickRelease/cypress-db-helper.git',
+    url='https://github.com/QuickRelease/cypress-django.git',
     packages=find_packages(),
     install_requires=['Django>=2.2.13'],
 )
