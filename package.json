@@ -1,0 +1,19 @@
+{
+  "name": "cypress-db-helper",
+  "version": "1.0.0",
+  "description": "Custom Cypress commands for Django integration",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QuickRelease/cypress-db-helper.git"
+  },
+  "author": "David Vaughan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/QuickRelease/cypress-db-helper/issues"
+  },
+  "homepage": "https://github.com/QuickRelease/cypress-db-helper#readme"
+}
