@@ -40,7 +40,7 @@ Cypress.Commands.add("login", (username, password) => {
 const path = require("path");
 Cypress.Commands.add("resetDB", (fixture, mutable) => {
     cy.exec(
-        `python -m cypress_db_helper ${mutable ? "--clearcache" : ""} --flush`
+        `python -m cypress_db ${mutable ? "--clearcache" : ""} --flush`
         + `${path.join(Cypress.env("DB_FIXTURE_DIR") || "cypress/db/fixtures", fixture)}`
     );
 });
