@@ -21,12 +21,11 @@ import argparse
 from importlib import import_module
 import os
 from subprocess import run
+import sys
 
 from django.core.cache import cache
 
-# TODO: needs to become an environment variable?
-#  - and if not set, produce an error
-PROJECT_NAME = os.path.split(os.path.abspath("."))[-1]
+SETTINGS = f"{os.path.split(os.path.abspath('.'))[-1]}.settings.cypress"
 
 
 def main():
@@ -78,13 +77,13 @@ def main():
         run(
             "python manage.py dumpdata --natural-primary --natural-foreign "
             "-e contenttypes -e admin.logentry -e sessions.session -e auth.Permission "
-            f"--indent=4 --settings={PROJECT_NAME}.settings.cypress",
+            f"--indent=4 --settings={SETTINGS}",
             shell=True,
         )
         return
     # TODO: remove this option?
     if args.reset:
-        cypress = import_module(f"{PROJECT_NAME}.settings.cypress")
+        cypress = import_module(SETTINGS)
         try:
             os.remove(cypress.DATABASES["default"]["NAME"])
         except FileNotFoundError:
@@ -96,11 +95,11 @@ def main():
             raise
     if args.init:
         run(
-            f"python manage.py migrate --settings={PROJECT_NAME}.settings.cypress",
+            f"python manage.py migrate --settings={SETTINGS}",
             shell=True,
         )
         run(
-            f"python manage.py createcachetable --settings={PROJECT_NAME}.settings.cypress",
+            f"python manage.py createcachetable --settings={SETTINGS}",
             shell=True,
         )
     if args.data:
@@ -111,7 +110,7 @@ def main():
             return
     if args.flush:
         run(
-            f"python manage.py flush --no-input --settings={PROJECT_NAME}.settings.cypress",
+            f"python manage.py flush --no-input --settings={SETTINGS}",
             shell=True,
         )
     if args.data:
@@ -121,7 +120,7 @@ def main():
                 "manage.py",
                 "loaddata",
                 args.data,
-                f"--settings={PROJECT_NAME}.settings.cypress",
+                f"--settings={SETTINGS}",
             ],
             shell=True,
         )
