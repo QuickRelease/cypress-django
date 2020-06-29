@@ -1,5 +1,5 @@
 {
-  "name": "cypress-db-helper",
+  "name": "cypress-django",
   "version": "1.0.0",
   "description": "Custom Cypress commands for Django integration",
   "main": "commands.js",
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/QuickRelease/cypress-db-helper.git"
+    "url": "git+https://github.com/QuickRelease/cypress-django.git"
   },
   "author": "David Vaughan",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/QuickRelease/cypress-db-helper/issues"
+    "url": "https://github.com/QuickRelease/cypress-django/issues"
   },
-  "homepage": "https://github.com/QuickRelease/cypress-db-helper#readme"
+  "homepage": "https://github.com/QuickRelease/cypress-django#readme"
 }
