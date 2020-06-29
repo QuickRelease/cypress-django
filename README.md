@@ -1,5 +1,8 @@
 # cypress-django
-### Cypress DB
+
+Python and Node.js package providing support for Cypress and Django integration.
+
+## Python: Cypress DB
 
 Issue commands to operate on the project's Cypress test database.
 
@@ -17,20 +20,20 @@ Implemented as a standalone script rather than a management command to avoid the
 overhead of `manage.py` when exiting early, since we want tests to be as fast as
 possible.
 
-#### Installation
+### Installation
 Either install directly:
 
 ```
 pip install git+https://github.com/QuickRelease/cypress-django.git
 ```
 
-or add to your requirements.txt file:
+or add to `requirements.txt`:
 
 ```
 -e git+https://github.com/QuickRelease/cypress-django.git#egg=cypress-django
 ```
 
-#### Usage
+### Usage
 
 ```
 python -m cypress_db [-h] [--init] [--reset] [--flush] [--dumpdata] [--clearcache] [data]
@@ -54,7 +57,7 @@ optional arguments:
                 database)
 ```
 
-### Cypress Commands
+## Node.js: Cypress Commands
 
 Provides a `login` helper function:
 - `cy.login()` will programmatically login using the `USERNAME` and `PASSWORD` environment
@@ -72,7 +75,7 @@ is necessary (this means repeated test runs with such tests will be significantl
 - The fixtures provided in the `fixture` argument should be the filename of a JSON file in
 `cypress/db/fixtures/`.
 
-#### Installation
+### Installation
 
 With `npm`:
 ```
