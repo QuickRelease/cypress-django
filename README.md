@@ -6,14 +6,15 @@ Python and Node.js package providing support for Cypress and Django integration.
 
 Issue commands to operate on the project's Cypress test database.
 
-Expects `settings/cypress.py` to exist and will use this as the settings
-module for the database operations.
+Expects `settings/cypress.py` to exist for the Django settings.
+Expects `cypress/db/setup_test_data.py` to exist to house the functions for loading
+in test data.
 
-This script can be used in Cypress tests to load fixtures into the test database,
+This script can be used in Cypress tests to load data into the test database,
 as well as be run on the command line as a shortcut for various operations on the
 test database.
 
-It caches the last loaded fixture (by filepath) and exits early if the same fixture
+It caches the last loaded test data function and exits early if the same function
 is loaded again - for tests that do not alter the database, it is not necessary to
 reload the data, so we can save time here.
 
@@ -37,25 +38,20 @@ or add to `requirements.txt`:
 ### Usage
 
 ```
-python -m cypress_db [-h] [--init] [--reset] [--flush] [--dumpdata] [--clearcache] [data]
+python -m cypress_db [-h] [--init] [--flush] [--clearcache] [func]
 ```
 
 positional arguments:
 ```
-  data          The filepath of a fixture to load (run `loaddata`)
+  func          Setup test data function to run
 ```
 
 optional arguments:
 ```
   -h, --help    show this help message and exit
   --init        Initialise the database (run `migrate` and `createcachetable`)
-  --reset       Delete the database (will not work if processes have a file
-                lock)
   --flush       Clear all data (run `flush`)
-  --dumpdata    Produce a JSON fixture to stdout containing the data currently
-                in the test database (run `dumpdata` with various flags set)
-  --clearcache  Delete the fixture cache (use when a test will modify the
-                database)
+  --clearcache  Delete the test data cache (use when a test will modify the database)
 ```
 
 ## Node.js: Cypress Commands
@@ -67,16 +63,16 @@ variables defined in `cypress.json` (or with `CYPRESS_` prefix if defined elsewh
 - If it is necessary to login as a different user, for example to test behaviour for users with
 limited permissions, simply provide the appropriate username and password as arguments
 
-Provides a `resetDB` helper function that expects the python package in this repo to be
+Provides a `setupDB` helper function that expects the python package in this repo to be
 installed:
-- `cy.resetDB(fixture, mutable)` will flush the test database and load in a fixture
+- `cy.setupDB` will flush the test database and load new data according to the
+function `setupFunc`
 - If the test will write to the database, `mutable` should be set to `true`
 - Otherwise set `mutable` to `false` to allow early exit from the script if no fixture loading
 is necessary (this means repeated test runs with such tests will be significantly faster)
-- The fixtures provided in the `fixture` argument should be the filename of a JSON file in
-the directory pointed to by the environment variable `DB_FIXTURE_DIR` defined in `cypress.json`
-(or with `CYPRESS_` prefix if defined elsewhere); if the environment variable is unset, the
-default is `cypress/db/fixtures`.
+- The `setupFunc` argument should be the name of a function living in `cypress/db/setup_test_data.py`
+which loads whatever data necessary into the test database - this is similar to a
+`TestCase.setUpTestData` method 
 
 ### Installation
 
