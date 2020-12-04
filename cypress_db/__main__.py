@@ -1,13 +1,15 @@
 """
 Issue commands to operate on the project's Cypress test database.
 
-Expects `settings/cypress.py` to exist.
+Expects `settings/cypress.py` to exist for the Django settings.
+Expects `cypress/db/setup_test_data.py` to exist to house the functions for loading
+in test data.
 
-This script can be used in Cypress tests to load fixtures into the test database,
+This script can be used in Cypress tests to load data into the test database,
 as well as be run on the command line as a shortcut for various operations on the
 test database.
 
-It caches the last loaded fixture (by filepath) and exits early if the same fixture
+It caches the last loaded test data function and exits early if the same function
 is loaded again - for tests that do not alter the database, it is not necessary to
 reload the data, so we can save time here.
 
@@ -22,19 +24,27 @@ import os
 from subprocess import run
 import sys
 
+import django
 from django.core.cache import cache
 
+# TODO: Make consts configurable
 SETTINGS = f"{os.path.split(os.path.abspath('.'))[-1]}.settings.cypress"
+SETUP_TEST_DATA_MODULE = "cypress.db.setup_test_data"
+CACHE_KEY = "cypress_last_func"
+CACHE_TIMEOUT = 60 * 60 * 24
 
 
 def main():
+    # Set environment variable so the correct settings are used
+    os.environ["DJANGO_SETTINGS_MODULE"] = SETTINGS
+
     parser = argparse.ArgumentParser(description="Cypress test DB operations")
 
     parser.add_argument(
-        "data",
+        "func",
         nargs="?",
         type=str,
-        help="The filepath of a fixture to load (run `loaddata`)",
+        help="Setup test data function to run",
     )
     parser.add_argument(
         "--init",
@@ -43,94 +53,43 @@ def main():
         help="Initialise the database (run `migrate` and `createcachetable`)",
     )
     parser.add_argument(
-        "--reset",
-        action="store_true",
-        default=False,
-        help="Delete the database (will not work if processes have a file lock)",
-    )
-    parser.add_argument(
         "--flush",
         action="store_true",
         default=False,
         help="Clear all data (run `flush`)",
     )
     parser.add_argument(
-        "--dumpdata",
-        action="store_true",
-        default=False,
-        help=(
-            "Produce a JSON fixture to stdout containing the data currently "
-            "in the test database (run `dumpdata` with various flags set)"
-        ),
-    )
-    parser.add_argument(
         "--clearcache",
         action="store_true",
         default=False,
-        help="Delete the fixture cache (use when a test will modify the database)",
+        help="Delete the test data cache (use when a test will modify the database)",
     )
 
     args = parser.parse_args()
 
-    if args.dumpdata:
-        run(
-            "python manage.py dumpdata --natural-primary --natural-foreign "
-            "-e contenttypes -e admin.logentry -e sessions.session -e auth.Permission "
-            f"--indent=4 --settings={SETTINGS}",
-            shell=True,
-        )
-        return
-    if args.reset:
-        cypress = import_module(SETTINGS)
-        try:
-            os.remove(cypress.DATABASES["default"]["NAME"])
-        except FileNotFoundError:
-            # Nothing to remove
-            pass
-        except PermissionError as e:
-            # If the server is still running (or any other processes are accessing the file)
-            # it will be locked
-            print(
-                f"{e}\nRemember to shut down any processes accessing the database file "
-                "(e.g. the server or any running python shells)",
-                file=sys.stderr,
-            )
-            return
     if args.init:
-        run(
-            f"python manage.py migrate --settings={SETTINGS}",
-            shell=True,
-        )
-        run(
-            f"python manage.py createcachetable --settings={SETTINGS}",
-            shell=True,
-        )
-    if args.data:
-        last_fixture = cache.get("cypress_last_loaded_fixture")
-        if last_fixture == args.data:
+        run(f"python manage.py migrate --settings={SETTINGS}", shell=True)
+        run(f"python manage.py createcachetable --settings={SETTINGS}", shell=True)
+    if args.func:
+        # Exit early if we don't need to load test data
+        if cache.get(CACHE_KEY) == args.func:
             if args.clearcache:
-                cache.delete("cypress_last_loaded_fixture")
+                cache.delete(CACHE_KEY)
             return
     if args.flush:
-        run(
-            f"python manage.py flush --no-input --settings={SETTINGS}",
-            shell=True,
-        )
-    if args.data:
-        # TODO: more visibility when a fixture can't be loaded
-        run(
-            [
-                "python",
-                "manage.py",
-                "loaddata",
-                args.data,
-                f"--settings={SETTINGS}",
-            ],
-            shell=True,
-        )
-        cache.set("cypress_last_loaded_fixture", args.data, 60 * 60 * 24)
+        run(f"python manage.py flush --no-input --settings={SETTINGS}", shell=True)
+    if args.func:
+        # Setup Django so that apps are registered and settings configured
+        # Note: we do this here to avoid the overhead when it is not necessary
+        django.setup()
+        # Load the test data module
+        setup_test_data = import_module(SETUP_TEST_DATA_MODULE)
+        # Look up the function and call
+        getattr(setup_test_data, args.func)()
+        # Remember this function was the last called
+        cache.set(CACHE_KEY, args.func, CACHE_TIMEOUT)
     if args.clearcache:
-        cache.delete("cypress_last_loaded_fixture")
+        cache.delete(CACHE_KEY)
 
 
 if __name__ == "__main__":

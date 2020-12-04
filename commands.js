@@ -13,7 +13,8 @@ Cypress.Commands.add("login", (username, password) => {
                 url: '/accounts/login/',
                 method: 'POST',
                 form: true,
-                followRedirect: false, // No need to retrieve the page after login
+                // No need to retrieve the page after login
+                followRedirect: false,
                 body: {
                     // Use parameters if provided, otherwise use enviroment variables
                     username: username || Cypress.env("USERNAME"),
@@ -33,14 +34,13 @@ Cypress.Commands.add("login", (username, password) => {
     });
 });
 
-// `cy.resetDB` will flush the test database and load in a fixture
+// `cy.setupDB` will flush the test database and load new data according to the
+// function `setupFunc`
 // If the test will write to the database, `mutable` should be set to `true`,
-// otherwise `false` to allow early exit from the script if no fixture loading
-// is necessary
+// otherwise `false` to allow early exit from the script if no loading is necessary
 const path = require("path");
-Cypress.Commands.add("resetDB", (fixture, mutable) => {
+Cypress.Commands.add("setupDB", (setupFunc, mutable) => {
     cy.exec(
-        `python -m cypress_db ${mutable ? "--clearcache" : ""} --flush `
-        + `${path.join(Cypress.env("DB_FIXTURE_DIR") || "cypress/db/fixtures", fixture)}`
+        `python -m cypress_db ${mutable ? "--clearcache" : ""} --flush ${setupFunc}`
     );
 });
