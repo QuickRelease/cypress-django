@@ -28,7 +28,10 @@ import django
 from django.core.cache import cache
 
 # TODO: Make consts configurable
-SETTINGS = f"{os.path.split(os.path.abspath('.'))[-1]}.settings.cypress"
+SETTINGS = os.environ.get(
+    "CYPRESS_SETTINGS",
+    default=f"{os.path.split(os.path.abspath('.'))[-1]}.settings.cypress",
+)
 SETUP_TEST_DATA_MODULE = "cypress.db.setup_test_data"
 CACHE_KEY = "cypress_last_func"
 CACHE_TIMEOUT = 60 * 60 * 24
