@@ -6,9 +6,9 @@ Python and Node.js package providing support for Cypress and Django integration.
 
 Issue commands to operate on the project's Cypress test database.
 
-Expects `settings/cypress.py` to exist for the Django settings.
-Expects `cypress/db/setup_test_data.py` to exist to house the functions for loading
-in test data.
+Expects `settings/cypress.py` to exist for the Django settings and
+`cypress/db/setup_test_data.py` to exist to house the functions for loading
+in test data (though both can be customised, see below).
 
 This script can be used in Cypress tests to load data into the test database,
 as well as be run on the command line as a shortcut for various operations on the
@@ -53,6 +53,18 @@ optional arguments:
   --flush       Clear all data (run `flush`)
   --clearcache  Delete the test data cache (use when a test will modify the database)
 ```
+
+### Setup test data functions
+
+### Configuration
+
+Environment variables:
+- `CYPRESS_SETTINGS` - python module for the cypress settings (default `<project_name>.settings.cypress`)
+
+Settings:
+- `SETUP_TEST_DATA_MODULE` - python module for setup test data functions (default `cypress.db.setup_test_data`)
+- `CACHE_KEY` - cache key for tracking last setup test data function loaded (default `cypress_last_func`)
+- `CACHE_TIMEOUT` - how long the `CACHE_KEY` lasts before expiring in seconds (default 1 day)
 
 ## Node.js: Cypress Commands
 

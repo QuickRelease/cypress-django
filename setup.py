@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='cypress-django',
-    version='0.0.2',
+    version='0.0.3',
     author='David Vaughan',
     author_email='david.vaughan@quickrelease.co.uk',
     description='Cypress DB helper command line script',
