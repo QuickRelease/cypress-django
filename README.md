@@ -38,7 +38,7 @@ or add to `requirements.txt`:
 ### Usage
 
 ```
-python -m cypress_db [-h] [--init] [--flush] [--clearcache] [func]
+cypress_db [-h] [--init] [--flush] [--clearcache] [func]
 ```
 
 positional arguments:

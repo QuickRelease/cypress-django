@@ -41,6 +41,6 @@ Cypress.Commands.add("login", (username, password) => {
 const path = require("path");
 Cypress.Commands.add("setupDB", (setupFunc, mutable) => {
     cy.exec(
-        `python -m cypress_db ${mutable ? "--clearcache" : ""} --flush ${setupFunc}`
+        `cypress_db ${mutable ? "--clearcache" : ""} --flush ${setupFunc}`
     );
 });
