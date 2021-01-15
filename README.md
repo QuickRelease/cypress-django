@@ -110,7 +110,12 @@ which loads whatever data necessary into the test database - this is similar to 
 
 ### Installation
 
-With `npm`:
+Ensure `cypress` is installed:
+```
+npm install cypress --save-dev
+```
+
+Install `cypress-django`:
 ```
 npm install git+https://github.com/QuickRelease/cypress-django.git --save-dev
 ```
