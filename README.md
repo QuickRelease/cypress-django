@@ -106,7 +106,20 @@ function `setupFunc`
 is necessary (this means repeated test runs with such tests will be significantly faster)
 - The `setupFunc` argument should be the name of a function living in `cypress/db/setup_test_data.py`
 which loads whatever data necessary into the test database - this is similar to a
-`TestCase.setUpTestData` method 
+`TestCase.setUpTestData` method
+
+Example `cypress.json`:
+```json
+{
+  "baseUrl": "http://127.0.0.1:8000",
+  "env": {
+    "USERNAME": "test",
+    "PASSWORD": "a"
+  },
+  "viewportHeight": 800,
+  "viewportWidth": 1400
+}
+```
 
 ### Installation
 
