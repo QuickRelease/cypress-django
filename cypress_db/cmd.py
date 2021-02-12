@@ -1,9 +1,10 @@
 """
 Issue commands to operate on the project's Cypress test database.
 
-Expects `settings/cypress.py` to exist for the Django settings.
-Expects `cypress/db/setup_test_data.py` to exist to house the functions for loading
-in test data.
+Expects `CYPRESS_SETTINGS` (default: `settings/cypress.py`) to exist for the Django
+settings.
+Expects `CYPRESS_SETUP_TEST_DATA_MODULE` (default: `cypress/db/setup_test_data.py`)
+to exist to house the functions for loading in test data.
 
 This script can be used in Cypress tests to load data into the test database,
 as well as be run on the command line as a shortcut for various operations on the
