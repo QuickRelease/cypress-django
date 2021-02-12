@@ -1,6 +1,6 @@
 {
   "name": "cypress-django",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Custom Cypress commands for Django integration",
   "main": "commands.js",
   "scripts": {

@@ -38,7 +38,7 @@ or add to `requirements.txt`:
 ### Usage
 
 ```
-python -m cypress_db [-h] [--init] [--flush] [--clearcache] [func]
+cypress_db [-h] [--init] [--flush] [--clearcache] [func]
 ```
 
 positional arguments:
@@ -56,15 +56,37 @@ optional arguments:
 
 ### Setup test data functions
 
+These are python functions that should load data into the test database as required for
+tests. The functions should not have any required arguments, as when they are invoked,
+no arguments will be passed. There is no particular restriction on what the functions
+can do, so it is possbile to have helper functions setup to do common setup that the
+exposed setup functions can call.
+
+For example, one possible function could be to create a superuser:
+```python
+def superuser():
+    User.objects.create_superuser(username="test", password="a")
+```
+Another function may be something like:
+```python
+def make_some_objects():
+    # we also need a create a superuser
+    superuser()
+    # make some objects
+    # ...
+```
+When a new function is loaded, the database is always flushed first, so you are starting
+from scratch every time.
+
 ### Configuration
 
 Environment variables:
 - `CYPRESS_SETTINGS` - python module for the cypress settings (default `<project_name>.settings.cypress`)
 
 Settings:
-- `SETUP_TEST_DATA_MODULE` - python module for setup test data functions (default `cypress.db.setup_test_data`)
-- `CACHE_KEY` - cache key for tracking last setup test data function loaded (default `cypress_last_func`)
-- `CACHE_TIMEOUT` - how long the `CACHE_KEY` lasts before expiring in seconds (default 1 day)
+- `CYPRESS_SETUP_TEST_DATA_MODULE` - python module for setup test data functions (default `cypress.db.setup_test_data`)
+- `CYPRESS_CACHE_KEY` - cache key for tracking last setup test data function loaded (default `cypress_last_func`)
+- `CYPRESS_CACHE_TIMEOUT` - how long the `CACHE_KEY` lasts before expiring in seconds (default 1 day)
 
 ## Node.js: Cypress Commands
 
@@ -80,7 +102,7 @@ installed:
 - `cy.setupDB` will flush the test database and load new data according to the
 function `setupFunc`
 - If the test will write to the database, `mutable` should be set to `true`
-- Otherwise set `mutable` to `false` to allow early exit from the script if no fixture loading
+- Otherwise set `mutable` to `false` to allow early exit from the script if no DB setup
 is necessary (this means repeated test runs with such tests will be significantly faster)
 - The `setupFunc` argument should be the name of a function living in `cypress/db/setup_test_data.py`
 which loads whatever data necessary into the test database - this is similar to a
@@ -88,7 +110,12 @@ which loads whatever data necessary into the test database - this is similar to 
 
 ### Installation
 
-With `npm`:
+Ensure `cypress` is installed:
+```
+npm install cypress --save-dev
+```
+
+Install `cypress-django`:
 ```
 npm install git+https://github.com/QuickRelease/cypress-django.git --save-dev
 ```

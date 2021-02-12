@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='cypress-django',
-    version='0.0.3',
+    version='0.1.0',
     author='David Vaughan',
     author_email='david.vaughan@quickrelease.co.uk',
     description='Cypress DB helper command line script',
@@ -14,4 +14,9 @@ setup(
     url='https://github.com/QuickRelease/cypress-django.git',
     packages=find_packages(),
     install_requires=['Django>=2.2.13'],
+    entry_points={
+        'console_scripts': [
+            'cypress_db = cypress_db.cmd:main',
+        ]
+    }
 )

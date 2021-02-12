@@ -1,8 +1,15 @@
 import os
+import sys
+
+cd = os.path.abspath('.')
+if cd not in sys.path:
+    # Add the current directory to sys.path so that `python -m`
+    # is not required to run the helper script
+    sys.path.insert(0, cd)
 
 SETTINGS = os.environ.get(
     "CYPRESS_SETTINGS",
-    default=f"{os.path.split(os.path.abspath('.'))[-1]}.settings.cypress",
+    default=f"{os.path.split(cd)[-1]}.settings.cypress",
 )
 # Set environment variable so the correct settings are used when loading test data
 # Note: Must set this before importing the settings, otherwise
