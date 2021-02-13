@@ -14,6 +14,7 @@ setup(
     url='https://github.com/QuickRelease/cypress-django.git',
     packages=find_packages(),
     install_requires=['Django>=2.2.13'],
+    license="MIT",
     entry_points={
         'console_scripts': [
             'cypress_db = cypress_db.cmd:main',
