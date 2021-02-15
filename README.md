@@ -86,7 +86,7 @@ Environment variables:
 Settings:
 - `CYPRESS_SETUP_TEST_DATA_MODULE` - python module for setup test data functions (default `cypress.db.setup_test_data`)
 - `CYPRESS_CACHE_KEY` - cache key for tracking last setup test data function loaded (default `cypress_last_func`)
-- `CYPRESS_CACHE_TIMEOUT` - how long the `CACHE_KEY` lasts before expiring in seconds (default 1 day)
+- `CYPRESS_CACHE_TIMEOUT` - how long the `CYPRESS_CACHE_KEY` lasts before expiring in seconds (default 1 day)
 
 ## Node.js: Cypress Commands
 
