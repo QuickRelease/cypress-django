@@ -23,17 +23,11 @@ overhead of `manage.py` when exiting early, since we want tests to be as fast as
 possible.
 
 ### Installation
-Either install directly:
 
 ```
-pip install git+https://github.com/QuickRelease/cypress-django.git
+pip install cypress-django
 ```
 
-or add to `requirements.txt`:
-
-```
--e git+https://github.com/QuickRelease/cypress-django.git#egg=cypress-django
-```
 
 ### Usage
 
