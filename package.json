@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Custom Cypress commands for Django integration",
   "main": "commands.js",
+  "files": ["commands.js"],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,6 +13,7 @@
   },
   "author": "David Vaughan",
   "license": "MIT",
+  "keywords": ["cypress", "testing", "django"],
   "bugs": {
     "url": "https://github.com/QuickRelease/cypress-django/issues"
   },
