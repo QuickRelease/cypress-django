@@ -1,5 +1,3 @@
-# Based on https://github.com/marketplace/actions/publish-to-npm
-
 name: npm-publish
 
 on:
@@ -11,18 +9,14 @@ jobs:
     name: npm-publish
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Publish if version has been updated
-      uses: pascalgn/npm-publish-action@1.3.6
-      with: # All of theses inputs are optional
-        create_tag: "false"
-        # We don't care what the commit message is since a new tag is the trigger
-        # Need to specify this to avoid the default
-        commit_pattern: ".*"
-        workspace: "."
-        publish_command: "yarn"
-        publish_args: "--non-interactive"
-      env: # More info about the environment variables in the README
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
-        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # You need to set this in your repo settings
+    - uses: actions/checkout@v2
+    - name: Publish
+      uses: actions/setup-node@v2
+      with:
+        node-version: '12.x'
+        registry-url: 'https://registry.npmjs.org'
+      run: |
+        npm install
+        npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
