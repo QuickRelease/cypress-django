@@ -124,7 +124,7 @@ npm install cypress --save-dev
 
 Install `cypress-django`:
 ```
-npm install git+https://github.com/QuickRelease/cypress-django.git --save-dev
+npm install cypress-django.git --save-dev
 ```
 
 and include this line in `cypress/support/index.js` or `cypress/support/commands.js`:
